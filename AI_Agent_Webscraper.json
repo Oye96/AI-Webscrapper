@@ -1,0 +1,512 @@
+{
+  "name": "AI Agent Webscraper",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -400,
+        140
+      ],
+      "id": "9941e22a-01eb-43d7-be23-4538dbd01536",
+      "name": "When chat message received",
+      "webhookId": "0612fe61-f507-48a2-b985-334c58626fd1"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=#Overview\nYou are the personal assistant that excels at web scraping. Your job is to send the user's query to the correct tool.\n##Tools\n- google_maps_web_scraper: Use this tool to scrape Google. Aggregate all results and send a list back to the user.\n- yellow_pages_web_scraper: Use this tool to scrape Yellow Pages. Aggregate all results and send a list back to the user.\n- apollo_web_scraper: Use this tool to scrape Apollo. Aggregate all results and send a list back to the user.\n- instagram_web_scraper: Use this tool to scrape Instagram. Aggregate all results and send a list back to the user.\n- tiktok_web_scraper: Use this tool to scrape TikTok. Aggregate all results and send a list back to the user.\n- facebook_web_scraper: Use this tool to scrape Facebook. Aggregate all results and send a list back to the user.\nIf the user asks to scrape multiple sources, please combine them all in one output.\nWorkflow Inputs\n- search: Insert the industry e.g., Landscaping, Plumbing).\n- location: Insert the city (e.g., Toronto, Los Angeles.\n- state: Insert the state/province code in uppercase e.g., NY, CA.\n- country: Insert the country code in lowercase e.g., ca, us\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -40,
+        140
+      ],
+      "id": "17dc95ce-466b-4c44-8578-c5d2f7e26eee",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-04-17-thinking",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        360
+      ],
+      "id": "2a494dc9-1301-4b7c-9e8d-98967b630981",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "GKxIR7f6haVueOwo",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -260,
+        360
+      ],
+      "id": "fef30f6e-2763-4aff-a865-9db7dd9fbe7c",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool when user want to scrape Instagram.",
+        "workflowId": {
+          "__rl": true,
+          "value": "bR9UG6sUDMFVHbWt",
+          "mode": "list",
+          "cachedResultName": "My workflow 2"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "search": "={{ $fromAI(\"industry\",\"This is the indutry that we are going to be using to web scrape result from Google Maps\") }}",
+            "location": "={{ $fromAI(\"location\",\"This is the location that we are going to be using to web scrape result from Google Maps\") }}",
+            "state": "={{ $fromAI(\"state\",\"This is the state that we are going to be using to web scrape result from Google Maps\") }}",
+            "country": "={{ $fromAI(\"country\",\"This is the country that we are going to be using to web scrape result from Google Maps\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "search",
+              "displayName": "search",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "state",
+              "displayName": "state",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        220,
+        360
+      ],
+      "id": "ccec1360-78d7-4f94-83ed-cf43ff51f505",
+      "name": "Instagram"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool when user want to scrape google maps.",
+        "workflowId": {
+          "__rl": true,
+          "value": "bR9UG6sUDMFVHbWt",
+          "mode": "list",
+          "cachedResultName": "My workflow 2"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "search": "={{ $fromAI(\"industry\",\"This is the indutry that we are going to be using to web scrape result from Google Maps\") }}",
+            "location": "={{ $fromAI(\"location\",\"This is the location that we are going to be using to web scrape result from Google Maps\") }}",
+            "state": "={{ $fromAI(\"state\",\"This is the state that we are going to be using to web scrape result from Google Maps\") }}",
+            "country": "={{ $fromAI(\"country\",\"This is the country that we are going to be using to web scrape result from Google Maps\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "search",
+              "displayName": "search",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "state",
+              "displayName": "state",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -100,
+        360
+      ],
+      "id": "be35135a-ab52-4645-af10-cca79b82da9e",
+      "name": "Google Maps"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool when user want to scrape facebook.",
+        "workflowId": {
+          "__rl": true,
+          "value": "bR9UG6sUDMFVHbWt",
+          "mode": "list",
+          "cachedResultName": "My workflow 2"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "search": "={{ $fromAI(\"industry\",\"This is the indutry that we are going to be using to web scrape result from Google Maps\") }}",
+            "location": "={{ $fromAI(\"location\",\"This is the location that we are going to be using to web scrape result from Google Maps\") }}",
+            "state": "={{ $fromAI(\"state\",\"This is the state that we are going to be using to web scrape result from Google Maps\") }}",
+            "country": "={{ $fromAI(\"country\",\"This is the country that we are going to be using to web scrape result from Google Maps\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "search",
+              "displayName": "search",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "state",
+              "displayName": "state",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        380,
+        360
+      ],
+      "id": "d9538bd5-a984-47b5-961c-38c6930e92e5",
+      "name": "Facebook"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool when user want to scrape google maps.",
+        "workflowId": {
+          "__rl": true,
+          "value": "bR9UG6sUDMFVHbWt",
+          "mode": "list",
+          "cachedResultName": "My workflow 2"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "search": "={{ $fromAI(\"industry\",\"This is the indutry that we are going to be using to web scrape result from Google Maps\") }}",
+            "location": "={{ $fromAI(\"location\",\"This is the location that we are going to be using to web scrape result from Google Maps\") }}",
+            "state": "={{ $fromAI(\"state\",\"This is the state that we are going to be using to web scrape result from Google Maps\") }}",
+            "country": "={{ $fromAI(\"country\",\"This is the country that we are going to be using to web scrape result from Google Maps\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "search",
+              "displayName": "search",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "state",
+              "displayName": "state",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        60,
+        360
+      ],
+      "id": "f3ed7625-e7aa-4382-9cb5-ba2a646b0e35",
+      "name": "Apollo"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool when user want to scrape google maps.",
+        "workflowId": {
+          "__rl": true,
+          "value": "bR9UG6sUDMFVHbWt",
+          "mode": "list",
+          "cachedResultName": "My workflow 2"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "search": "={{ $fromAI(\"industry\",\"This is the indutry that we are going to be using to web scrape result from Google Maps\") }}",
+            "location": "={{ $fromAI(\"location\",\"This is the location that we are going to be using to web scrape result from Google Maps\") }}",
+            "state": "={{ $fromAI(\"state\",\"This is the state that we are going to be using to web scrape result from Google Maps\") }}",
+            "country": "={{ $fromAI(\"country\",\"This is the country that we are going to be using to web scrape result from Google Maps\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "search",
+              "displayName": "search",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "state",
+              "displayName": "state",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        540,
+        360
+      ],
+      "id": "94febd4f-127d-49cc-9995-9b11a390e62f",
+      "name": "Tiktok"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Maps": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Facebook": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apollo": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tiktok": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4a2f50b4-c3fa-4c7b-a81f-fac7976957d3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "efbf7d9452579dc4f99f51875827f8921652e01e00188fbbc00d9bb14c5bce9f"
+  },
+  "id": "dIJlsMEcAxva5ZZu",
+  "tags": []
+}
