@@ -61,7 +61,7 @@ Trigger → Define Target URL → Call Apify Actor →
 
 
 ### Search Engine
-   <img src="./scrapper_search_engine.png" width="50%" height="50%"/> 
+   <img src="./scrapper_search_engine.png"/> 
 
    ### Scrapping Engine (with Apify API Integration)
 
