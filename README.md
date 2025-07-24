@@ -58,3 +58,33 @@ Trigger → Define Target URL → Call Apify Actor →
 > ✅ Workflow triggers Apify actor with geo-target & keyword  
 > ✅ Scrapes: business name, address, contact, ratings  
 > ✅ Stores in Google Sheets
+
+
+### Search Engine
+   <img src="./scrapper_search_engine.png"width="50%" height="50%"/> 
+
+   ### Scrapping Engine (with Apify API Integration)
+
+This component of the AI Webscraper system focuses on modular, asynchronous scraping powered by workflow chaining and dynamic HTTP communication with Apify. It separates responsibilities into distinct, callable workflows for better maintainability, scalability, and performance.
+
+## ✅ Solutions Breakdown
+
+1. Workflow A – Data Trigger & POST to Apify
+- Accepts user-defined input: target URLs, scraping parameters, business category, etc.
+- Sends a POST HTTP request to Apify to start scraping using a selected actor.
+- Records scrape job ID or dataset reference.
+
+2. Workflow B – GET from Apify
+- Scheduled or triggered by Workflow A after a delay.
+- Uses GET HTTP to fetch results from Apify’s dataset API or key-value store.
+- Cleans and formats the scraped data for output.
+
+3. Workflow C – External Output or Trigger
+- Final output is routed to Google Sheets, CRM, Telegram, or voice agent (e.g. ElevenLabs).
+- Optionally triggers alerts or launches next scraping cycle.
+
+## Architecture Overview
+
+Main Workflow → POST HTTP →
+→ [Wait / Trigger] → GET HTTP →
+→ Format Results → Output to Sheets or System → Notify / Speak
